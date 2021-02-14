@@ -7,6 +7,17 @@ For the impatient or curious: [this is what the template looks
 like](Thesis.pdf).
 You may also want to take a look at my [my Ph.D. dissertation](http://bastian.rieck.me/research/Dissertation_Rieck_2017.pdf), which uses a predecessor of this template.
 
+# Users
+
+Before going over the details of this template, why not look at how it
+looks in practice? The following documents have been typeset with this
+template&nbsp;(or a slightly modified variant of it):
+
+- S. Almasian, [Learning Joint Vector Representations of Words and Named Entities](https://github.com/satya77/Thesis_Entity_Embeddings/blob/master/MasterThesis_SatyaAlmasian.pdf), M.Sc.&thinsp;thesis, Heidelberg University, 2018
+- K. Hanser, [Visualization of Coherence in Meteorological Data](https://github.com/hanserK/master_thesis/blob/master/Thesis_Karsten_Hanser.pdf), M.Sc.&thinsp;thesis, Heidelberg University, 2018
+- P. Jung, [On the Frame of Reference in Flow Visualization](https://github.com/JungStar/master_thesis/blob/master/Thesis.pdf), M.Sc.&thinsp;thesis, Heidelberg University, 2019
+- B. Rieck, [Persistent Homology in Multivariate Data Visualization](http://archiv.ub.uni-heidelberg.de/volltextserver/22914/1/Dissertation.pdf), Ph.D.&thinsp;thesis, Heidelberg University, 2017
+
 # Advantages
 
 This template aims to be&hellip;
@@ -100,7 +111,6 @@ how a real document might look like.
 - [`hyperref`](https://ctan.org/pkg/hyperref)
 - [`metalogo`](https://ctan.org/pkg/metalogo)
 
-
 For pdfTeX users:
 
 - [`ebgaramond`](https://ctan.org/pkg/ebgaramond)
@@ -118,6 +128,84 @@ The template uses the MIT license. Please see the file
 [`LICENSE.md`](LICENSE.md) in the main directory of the repository for
 more details.
 
+# Known issues
+
+The superscript citation style is not compatible with all citation
+styles. For example, to use the citation with `chem-angew`, please
+use an adjusted `\supercite` command such as this one:
+
+```latex
+\DeclareCiteCommand{\supercite}[\mkbibsuperscript]
+{\bibopenbracket%
+	\usebibmacro{cite:init}%
+	\let\multicitedelim=\supercitedelim
+	\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\usebibmacro{cite:comp}}
+{}
+{\usebibmacro{cite:dump}%
+	\usebibmacro{postnote}%
+	\bibclosebracket%
+}
+```
+
+Thanks to Carlo Botha for this contribution!
+
+# Extensions
+
+## Table of contents per chapter
+
+If you want a small table of contents for each chapter, update
+`mimosis.cls` as follows:
+
+```latex
+\usepackage[automark,headsepline,plainheadsepline]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\automark[section]{chapter}
+
+\lehead*{\headmark}
+\cehead{}
+\rehead{\headmark}
+
+\lohead{\headmark}
+\cohead{}
+\rohead*{\headmark}
+
+\newpairofpagestyles[scrheadings]{chapter}{%
+	\KOMAoptions{headsepline=false,plainheadsepline=false}%
+	\ihead*{}%
+	\ohead*{}%
+}
+
+\newpairofpagestyles[scrheadings]{part}{%
+	\KOMAoptions{headsepline=false,plainheadsepline=false}%
+	\ihead*{}%
+	\ohead*{}%
+}
+
+\renewcommand*\chapterpagestyle{chapter}
+
+\renewcommand*\partpagestyle{part}
+```
+
+This extension was contributed by [Nikos Antoniadis](https://github.com/nikosantoniadis) in [issue 16](https://github.com/Pseudomanifold/latex-mimosis/issues/16).
+If you want to add this as proper extension or configurable parameter,
+please let me know!
+
+# Frequently asked questions (FAQ)
+
+1. Does the template support bold fonts?
+
+Yes. First of all, you can change the default font (my personal
+suggestion is to use the `fontspec` package and `xelatex` or `lualatex`;
+then, changing your font is as easy as using `\setmainfont`). Second,
+note that in older TeX distributions, the font &lsquo;EB
+Garamond&rsquo;, shipped in the `ebgaramond` package, does *not* ship
+with a bold variant. Consider updating your TeX distribution or manually
+replacing the font. This is *not* an issue with this
+package&mdash;please see [issue #10](/../../issues/10) for more
+information.
+
 # Contributing
 
 If you require additional features, find some bugs, or just have some
@@ -127,6 +215,10 @@ generic inquiries, please just open an issue in this repository.
 
 Here is a list of contributors:
 
+- [Nikos Antoniadis (nikosantoniadis)](https://github.com/nikosantoniadis): mini-TOC extension
 - [Giuseppe (giuscri)](https://github.com/giuscri): improved cleanup operations
+- Carlo Botha: fixed `\supercite` for `chem-angew` citation style
 - [Miloslav Číž (drummyfish)](https://github.com/drummyfish): grammar/style corrections for `README` file
-- [Bastian Rieck (Submanifold)](https://github.com/Submanifold): original creator and maintainer
+- [Bastian Rieck (Pseudomanifold)](https://github.com/Pseudomanifold): original creator and maintainer
+- [Diego A. Rodriquez (diarodriguezva)](https://github.com/diarodriguezv): support with `ebgaramond` updates
+- [TonyY](https://github.com/toooonyy): `latexmkrc` updates and fixes; `hyperref` fixes
